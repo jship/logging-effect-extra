@@ -4,13 +4,9 @@
 
 module Main (main) where
 
-import Control.Monad.Log (MonadLog, WithSeverity)
-import qualified Control.Monad.Log as Log
-import Control.Monad.Log.Extra (WithFile)
+import Control.Monad.Log.Extra (Doc, WithFile, MonadLog, WithSeverity)
 import qualified Control.Monad.Log.Extra as Log
-import qualified Control.Monad.Log.Extra as Log ()
 import qualified System.IO as IO
-import Text.PrettyPrint.Leijen.Text (Doc)
 
 app :: MonadLog (WithSeverity (WithFile Doc)) m => m ()
 app = do
