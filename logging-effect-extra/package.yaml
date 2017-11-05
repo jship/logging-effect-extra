@@ -1,7 +1,7 @@
 category: Other
 dependencies:
 - base >=4.8 && <4.11
-description: Batteries-included `logging-effect`.
+description: Supplemental packages for `logging-effect`.
 executables:
   log-extra:
     dependencies:
@@ -28,5 +28,5 @@ library:
 license: MIT
 maintainer: Jason Shipman
 name: logging-effect-extra
-synopsis: Batteries-included `logging-effect`.
+synopsis: Supplemental packages for `logging-effect`.
 version: '1.0.0'
