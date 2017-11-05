@@ -1,0 +1,30 @@
+category: Other
+dependencies:
+- base >=4.8 && <4.11
+description: Batteries-included `logging-effect`.
+executables:
+  log-extra:
+    dependencies:
+    - logging-effect-extra
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+    main: log-extra.hs
+    source-dirs: executable
+extra-source-files:
+- CHANGELOG.md
+- LICENSE.md
+- package.yaml
+- README.md
+ghc-options: -Wall
+github: jship/logging-effect-extra
+library:
+  dependencies:
+  - logging-effect-extra-file >= 0.0.1 && < 0.1.0
+  source-dirs: library
+license: MIT
+maintainer: Jason Shipman
+name: logging-effect-extra
+synopsis: Batteries-included `logging-effect`.
+version: '1.0.0'
