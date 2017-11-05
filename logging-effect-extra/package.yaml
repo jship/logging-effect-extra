@@ -1,3 +1,4 @@
+author: Jason Shipman
 category: Other
 dependencies:
 - base >=4.8 && <4.11
