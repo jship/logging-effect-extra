@@ -1,4 +1,4 @@
-# [`logging-effect-extra`][]
+# [logging-effect-extra][]
 
 ## Synopsis
 
