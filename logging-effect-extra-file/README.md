@@ -1,4 +1,4 @@
-# [logging-effect-extra-modules][]
+# [logging-effect-extra-file][]
 
 ## Synopsis
 
@@ -45,4 +45,4 @@ stack exec log-file-and-severity
 stack exec log-file
 ```
 
-[logging-effect-extra-modules]: https://github.com/jship/logging-effect-extra
+[logging-effect-extra-file]: https://github.com/jship/logging-effect-extra
