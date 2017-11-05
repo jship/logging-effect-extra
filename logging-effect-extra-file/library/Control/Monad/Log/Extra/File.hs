@@ -196,10 +196,16 @@ testAppFileAndSeverity = do
 
 {- $convenience
 
-While @logging-effect-extra-file@ tries to be as general as possible, there is a fairly
-common case of logging, namely basic messages with an indication of severity.
-These combinators assume that you will be using 'WithSeverity' at the outer-most
-level of your log message stack, though make no assumptions at what is inside
-your log messages. There is a @logX@ combinator for each level in 'Severity'.
+@logging-effect-extra-file@ provides combinators for:
+
+* adding file info to messages (module name and line number)
+* adding both file info and severity to messages
+
+In the former case, 'WithFile' will be at the outer-most level of your log
+message stack.  In the latter case, 'WithSeverity' will be at the outer-most
+level of your log message stack, wrapping 'WithFile'.
+
+The package makes no assumptions on what is inside your log messages though.
+There is a @logXTH@ combinator for each level in 'Severity'.
 
 -}
