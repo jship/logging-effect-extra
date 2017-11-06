@@ -1,5 +1,9 @@
 # Change log
 
+## 1.1.1
+
+* Update README to mention `logging-effect-extra-handler`
+
 ## 1.1.0
 
 * Add `logging-effect-extra-handler` dependency

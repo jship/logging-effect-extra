@@ -31,4 +31,4 @@ license: MIT
 maintainer: Jason Shipman
 name: logging-effect-extra
 synopsis: Supplemental packages for `logging-effect`.
-version: '1.1.0'
+version: '1.1.1'
