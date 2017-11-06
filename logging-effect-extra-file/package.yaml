@@ -39,4 +39,4 @@ license: MIT
 maintainer: Jason Shipman
 name: logging-effect-extra-file
 synopsis: TH splices to augment log messages with file info
-version: '1.0.0'
+version: '1.1.0'
