@@ -26,6 +26,7 @@ module Control.Monad.Log.Extra.File
   , logErrorTH
   , logWarningTH
   , logNoticeTH
+  , logInfoTH
   , logInformationalTH
   , logDebugTH
     -- ** Without severity
@@ -97,9 +98,17 @@ logNoticeTH = logSeverityMessageTH Notice
 -- | Generates a function that logs an 'Informational' message with info from the
 -- source file.
 --
+-- > $(logInfoTH) "Does anyone read these?"
+logInfoTH :: Q Exp
+logInfoTH = logSeverityMessageTH Informational
+
+-- | Generates a function that logs an 'Informational' message with info from the
+-- source file.
+--
 -- > $(logInformationalTH) "Does anyone read these?"
 logInformationalTH :: Q Exp
 logInformationalTH = logSeverityMessageTH Informational
+{-# DEPRECATED logInformationalTH "logInformationalTH is deprecated in favor of logInfoTH." #-}
 
 -- | Generates a function that logs a 'Debug' message with info from the
 -- source file.

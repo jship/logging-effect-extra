@@ -19,7 +19,7 @@ app = do
   $(Log.logErrorTH) "Errors abound!"
   $(Log.logWarningTH) "Cargo number 2331 has commandeered the vessel"
   $(Log.logNoticeTH) "Heads up, but it's no biggie."
-  $(Log.logInformationalTH) "Does anyone read these?"
+  $(Log.logInfoTH) "Does anyone read these?"
   $(Log.logDebugTH) "Sleuthing with log messages..."
 
 main :: IO ()
