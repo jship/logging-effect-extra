@@ -2,3 +2,4 @@ resolver: nightly-2017-11-03
 packages:
 - logging-effect-extra
 - logging-effect-extra-file
+- logging-effect-extra-handler
