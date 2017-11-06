@@ -197,7 +197,7 @@ testAppFileAndSeverity = do
   $('logErrorTH') "Errors abound!"
   $('logWarningTH') "Cargo number 2331 has commandeered the vessel"
   $('logNoticeTH') "Heads up, but it's no biggie."
-  $('logInformationalTH') "Does anyone read these?"
+  $('logInfoTH') "Does anyone read these?"
   $('logDebugTH') "Sleuthing with log messages..."
 @
 

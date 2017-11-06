@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased version
+
+* Update haddock example to use `logInfoTH` instead of deprecated `logInformationalTH` splice
+
 ## 1.1.1
 
 * Update README to use `logInfoTH` instead of deprecated `logInformationalTH` splice
