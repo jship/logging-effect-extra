@@ -6,7 +6,6 @@ module Main (main) where
 
 import Control.Monad.Log.Extra (Doc, WithFile, MonadLog, WithSeverity)
 import qualified Control.Monad.Log.Extra as Log
-import qualified System.IO as IO
 
 app :: MonadLog (WithSeverity (WithFile Doc)) m => m ()
 app = do
@@ -16,9 +15,9 @@ app = do
   $(Log.logErrorTH) "Errors abound!"
   $(Log.logWarningTH) "Cargo number 2331 has commandeered the vessel"
   $(Log.logNoticeTH) "Heads up, but it's no biggie."
-  $(Log.logInformationalTH) "Does anyone read these?"
+  $(Log.logInfoTH) "Does anyone read these?"
   $(Log.logDebugTH) "Sleuthing with log messages..."
 
 main :: IO ()
-main = Log.withFDHandler Log.defaultBatchingOptions IO.stdout 0.4 80 $ \stdoutHandler ->
-  Log.runLoggingT app (stdoutHandler . Log.renderWithSeverity (Log.renderWithFile id))
+main = Log.withStdoutHandler $ \stdoutHandler ->
+  Log.runLoggingT app (Log.iso8601PlusHandler stdoutHandler . Log.renderWithSeverity (Log.renderWithFile id))
