@@ -24,11 +24,11 @@ library:
   dependencies:
   - logging-effect >= 1.1.0 && <1.3
   - logging-effect-extra-file >= 1.1.0 && <1.2.0
-  - logging-effect-extra-handler >= 1.0.0 && <1.1.0
+  - logging-effect-extra-handler >= 1.1.0 && <1.2.0
   - wl-pprint-text >=1.1.0.4 && <1.2
   source-dirs: library
 license: MIT
 maintainer: Jason Shipman
 name: logging-effect-extra
 synopsis: Supplemental packages for `logging-effect`.
-version: '1.1.1'
+version: '1.2.0'

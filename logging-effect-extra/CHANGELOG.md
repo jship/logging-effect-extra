@@ -1,5 +1,10 @@
 # Change log
 
+## 1.2.0
+
+* Bumped min version of `logging-effect-extra-handler` to 1.1.0 (this deprecates `dispatchHandler`)
+* Updated `log-extra` example program to use `routeHandler` instead of `dispatchHandler`
+
 ## 1.1.1
 
 * Update README to mention `logging-effect-extra-handler`

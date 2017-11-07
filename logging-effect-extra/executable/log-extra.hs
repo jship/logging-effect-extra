@@ -19,5 +19,9 @@ app = do
   $(Log.logDebugTH) "Sleuthing with log messages..."
 
 main :: IO ()
-main = Log.withStdoutHandler $ \stdoutHandler ->
-  Log.runLoggingT app (Log.iso8601PlusHandler stdoutHandler . Log.renderWithSeverity (Log.renderWithFile id))
+main =
+  Log.withStdoutHandler $ \stdoutHandler ->
+  Log.withStderrHandler $ \stderrHandler ->
+  Log.runLoggingT app (Log.routeHandler (Log.iso8601PlusHandler stdoutHandler)
+                                        (Log.iso8601PlusHandler stderrHandler)
+                                        (Log.renderWithFile id))
