@@ -6,23 +6,23 @@ dependencies:
 - wl-pprint-text >=1.1.0.4 && <1.2
 description: Handy logging handler combinators.
 executables:
-  dispatch-handler:
+  route-handler:
     dependencies:
     - logging-effect-extra-handler
     ghc-options:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
-    main: dispatch-handler.hs
+    main: route-handler.hs
     source-dirs: executable
-  dispatch-handler-with-iso8601:
+  route-handler-with-iso8601:
     dependencies:
     - logging-effect-extra-handler
     ghc-options:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
-    main: dispatch-handler-with-iso8601.hs
+    main: route-handler-with-iso8601.hs
     source-dirs: executable
   iso8601-handler:
     dependencies:

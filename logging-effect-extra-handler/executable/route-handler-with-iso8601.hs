@@ -23,5 +23,6 @@ main :: IO ()
 main =
   Log.withStdoutHandler $ \stdoutHandler ->
   Log.withStderrHandler $ \stderrHandler ->
-  Log.runLoggingT app (Log.dispatchHandler (Log.iso8601Handler stdoutHandler)
-                                           (Log.iso8601Handler stderrHandler))
+  Log.runLoggingT app (Log.routeHandler (Log.iso8601Handler stdoutHandler)
+                                        (Log.iso8601Handler stderrHandler)
+                                        id)

@@ -8,11 +8,11 @@ module Control.Monad.Log.Extra.Handler
     -- ** Quickstart using a timestamp handler
     -- $quickStartTimestampHandler
 
-    -- ** Quickstart using dispatch handler
-    -- $quickStartDispatchHandler
+    -- ** Quickstart using routing handler
+    -- $quickStartRoutingHandler
 
-    -- ** Quickstart using dispatch handler with timestamps
-    -- $quickStartDispatchHandlerWithTimestamps
+    -- ** Quickstart using routing handler with timestamps
+    -- $quickStartRoutingHandlerWithTimestamps
 
     -- * Convenience handler combinators
     -- $convenience
@@ -22,7 +22,8 @@ module Control.Monad.Log.Extra.Handler
   , iso8601PlusHandler
   , rfc822Handler
 
-    -- ** Dispatch handlers
+    -- ** Routing handlers
+  , routeHandler
   , dispatchHandler
 
     -- ** Shortcuts for stdout/stderr handlers
@@ -80,12 +81,13 @@ customTimestampHandler formatter handler = \msg -> do
 -- | Basic dispatch handler that routes 'Warning', 'Notice', 'Informational',
 -- and 'Debug' messages to the first input handler and routes 'Emergency',
 -- 'Alert', 'Critical', and 'Error' messages to the second input handler.
-dispatchHandler :: (MonadIO m, MonadMask m)
-                => Handler m Doc -- ^ The handler for non-error messages (i.e. stdout handler)
-                -> Handler m Doc -- ^ The handler for error messages (i.e. stderr handler)
-                -> Handler m (WithSeverity Doc)
-dispatchHandler stdoutHandler stderrHandler = \msg ->
-  let msg' = Log.renderWithSeverity id msg
+routeHandler :: (MonadIO m, MonadMask m)
+             => Handler m Doc -- ^ The handler for non-error messages (i.e. stdout handler)
+             -> Handler m Doc -- ^ The handler for error messages (i.e. stderr handler)
+             -> (a -> Doc)    -- ^ How to render
+             -> Handler m (WithSeverity a)
+routeHandler stdoutHandler stderrHandler renderer = \msg ->
+  let msg' = Log.renderWithSeverity renderer msg
       handler = case msgSeverity msg of
         Emergency     -> stderrHandler
         Alert         -> stderrHandler
@@ -96,6 +98,19 @@ dispatchHandler stdoutHandler stderrHandler = \msg ->
         Informational -> stdoutHandler
         Debug         -> stdoutHandler
    in handler msg'
+
+-- | Basic dispatch handler that routes 'Warning', 'Notice', 'Informational',
+-- and 'Debug' messages to the first input handler and routes 'Emergency',
+-- 'Alert', 'Critical', and 'Error' messages to the second input handler.
+-- This function is limiting as it assumes incoming messages are
+-- 'WithSeverity' 'Doc' instead of the more general 'WithSeverity' 'a'.
+dispatchHandler :: (MonadIO m, MonadMask m)
+                => Handler m Doc -- ^ The handler for non-error messages (i.e. stdout handler)
+                -> Handler m Doc -- ^ The handler for error messages (i.e. stderr handler)
+                -> Handler m (WithSeverity Doc)
+dispatchHandler stdoutHandler stderrHandler =
+  routeHandler stdoutHandler stderrHandler id
+{-# DEPRECATED dispatchHandler "dispatchHandler is deprecated in favor of routeHandler." #-}
 
 -- | Convenience wrapper around 'Log.withFDHandler' for 'IO.stdout' with somewhat sensible defaults.
 withStdoutHandler :: (MonadIO m, MonadMask m) => (Handler m Doc -> m a) -> m a
@@ -168,26 +183,26 @@ main = 'withStdoutHandler' $ \stdoutHandler ->
 
 -}
 
-{- $quickStartDispatchHandler
+{- $quickStartRoutingHandler
 
 @
 main :: IO ()
 main =
   'withStdoutHandler' $ \stdoutHandler ->
   'withStderrHandler' $ \stderrHandler ->
-  'Log.runLoggingT' app ('dispatchHandler' stdoutHandler stderrHandler)
+  'Log.runLoggingT' app ('routeHandler' stdoutHandler stderrHandler 'id')
 @
 
 -}
 
-{- $quickStartDispatchHandlerWithTimestamps
+{- $quickStartRoutingHandlerWithTimestamps
 
 @
 main :: IO ()
 main =
   'withStdoutHandler' $ \stdoutHandler ->
   'withStderrHandler' $ \stderrHandler ->
-  'Log.runLoggingT' app ('dispatchHandler' ('iso8601Handler' stdoutHandler) ('iso8601Handler' stderrHandler))
+  'Log.runLoggingT' app ('routeHandler' ('iso8601Handler' stdoutHandler) ('iso8601Handler' stderrHandler) 'id')
 @
 
 -}

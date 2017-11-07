@@ -23,4 +23,4 @@ main :: IO ()
 main =
   Log.withStdoutHandler $ \stdoutHandler ->
   Log.withStderrHandler $ \stderrHandler ->
-  Log.runLoggingT app (Log.dispatchHandler stdoutHandler stderrHandler)
+  Log.runLoggingT app (Log.routeHandler stdoutHandler stderrHandler id)

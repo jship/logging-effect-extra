@@ -28,8 +28,9 @@ main :: IO ()
 main =
   Log.withStdoutHandler $ \stdoutHandler ->
   Log.withStderrHandler $ \stderrHandler ->
-  Log.runLoggingT app (Log.dispatchHandler (Log.iso8601Handler stdoutHandler)
-                                           (Log.iso8601Handler stderrHandler))
+  Log.runLoggingT app (Log.routeHandler (Log.iso8601Handler stdoutHandler)
+                                        (Log.iso8601Handler stderrHandler)
+                                        id)
 ```
 
 ## Usage via `stack`
@@ -37,12 +38,6 @@ main =
 ``` sh
 # Build the project.
 stack build
-
-# Run the `dispatch-handler-with-iso8601` example
-stack exec dispatch-handler-with-iso8601
-
-# Run the `dispatch-handler` example
-stack exec dispatch-handler
 
 # Run the `iso8601-handler` example
 stack exec iso8601-handler
@@ -52,6 +47,12 @@ stack exec iso8601plus-handler
 
 # Run the `rfc822-handler` example
 stack exec rfc822-handler
+
+# Run the `route-handler-with-iso8601` example
+stack exec route-handler-with-iso8601
+
+# Run the `route-handler` example
+stack exec route-handler
 ```
 
 [logging-effect-extra-handler]: https://github.com/jship/logging-effect-extra
