@@ -1,5 +1,9 @@
 # Change log
 
+## 1.2.1
+
+* Bumped min version of `logging-effect-extra-handler` to 1.1.1 (to include zero-padded, fixed width update to `iso8601PlusHandler`)
+
 ## 1.2.0
 
 * Bumped min version of `logging-effect-extra-handler` to 1.1.0 (this deprecates `dispatchHandler`)
