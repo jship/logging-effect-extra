@@ -60,7 +60,7 @@ iso8601PlusHandler :: (MonadIO m, MonadMask m)
                    => Handler m Doc
                    -> Handler m Doc
 iso8601PlusHandler = customTimestampHandler formatter where
-  formatter = Time.formatTime Time.defaultTimeLocale "%Y-%m-%dT%H:%M:%S%Q"
+  formatter = Time.formatTime Time.defaultTimeLocale "%Y-%m-%dT%H:%M:%S%06Q"
 
 -- | Converts an existing handler into a handler that renders an RFC822
 -- timestamp on every log message.
