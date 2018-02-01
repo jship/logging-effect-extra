@@ -1,5 +1,9 @@
 # Change log
 
+## 1.1.2
+
+* Bump upper bound on `time` from 1.9 to 1.10
+
 ## 1.1.1
 
 * Update `iso8601PlusHandler` time output to zero-padded, fixed width fraction of second
