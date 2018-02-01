@@ -61,7 +61,7 @@ github: jship/logging-effect-extra
 library:
   dependencies:
   - exceptions >= 0.8.0.2 && <0.9
-  - time >=1.5 && <1.9
+  - time >=1.5 && <1.10
   source-dirs: library
 license: MIT
 maintainer: Jason Shipman
