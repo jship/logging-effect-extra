@@ -67,4 +67,4 @@ license: MIT
 maintainer: Jason Shipman
 name: logging-effect-extra-handler
 synopsis: Handy logging handler combinators
-version: '1.1.2'
+version: '1.1.3'

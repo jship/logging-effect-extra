@@ -1,5 +1,9 @@
 # Change log
 
+## 1.1.3
+
+* Bump upper bound on `exceptions` from 0.9 to 0.10
+
 ## 1.1.2
 
 * Bump upper bound on `time` from 1.9 to 1.10
