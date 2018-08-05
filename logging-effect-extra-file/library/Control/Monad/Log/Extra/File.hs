@@ -134,14 +134,23 @@ data WithFile a = WithFile
 -- | Given a way to render the underlying message @a@, render a message with its
 -- file info.
 --
+-- >>> :set -XOverloadedStrings
 -- >>> let loc = Loc "SomeFile.hs" "some-package" "SomeModule" (1, 1) (1, 1)
 -- >>> renderWithFile id (WithFile loc "Some message")
--- [SomeModule:1] Some message
+-- [some-package:SomeModule SomeFile.hs:1:1] Some message
 renderWithFile :: (a -> Doc ann) -> (WithFile a -> Doc ann)
-renderWithFile k (WithFile (Loc {loc_module, loc_start}) a) = result where
+renderWithFile k (WithFile loc a) = result where
   result = Pretty.brackets fileInfo Pretty.<+> rest
-  fileInfo = Pretty.hcat (Pretty.punctuate Pretty.colon fileInfoList)
-  fileInfoList = [Pretty.pretty loc_module, Pretty.pretty (fst loc_start)]
+  fileInfo = part1 Pretty.<+> part2 where
+    part1 = Pretty.hcat . Pretty.punctuate Pretty.colon $
+      [ Pretty.pretty . TH.loc_package $ loc
+      , Pretty.pretty . TH.loc_module $ loc
+      ]
+    part2 = Pretty.hcat . Pretty.punctuate Pretty.colon $
+      [ Pretty.pretty . TH.loc_filename $ loc
+      , Pretty.pretty . fst . TH.loc_start $ loc
+      , Pretty.pretty . snd . TH.loc_start $ loc
+      ]
   rest = Pretty.align (k a)
 
 -- | Generates a function that logs a message with the given 'Severity' and
