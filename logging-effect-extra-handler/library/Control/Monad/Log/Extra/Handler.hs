@@ -45,11 +45,11 @@ import Data.Time (UTCTime)
 import qualified Data.Time as Time
 import System.IO (Handle)
 import qualified System.IO as IO
-import Text.PrettyPrint.Leijen.Text (Doc)
+import Data.Text.Prettyprint.Doc (Doc)
 
 -- | Converts an existing handler into a handler that renders an ISO8601
 -- (i.e. YYYY-MM-DDTHH:MM:SS) timestamp on every log message.
-iso8601Handler :: (MonadIO m, MonadMask m) => Handler m Doc -> Handler m Doc
+iso8601Handler :: (MonadIO m, MonadMask m) => Handler m (Doc ann) -> Handler m (Doc ann)
 iso8601Handler = customTimestampHandler formatter where
   formatter = Time.formatTime Time.defaultTimeLocale "%Y-%m-%dT%H:%M:%S"
 
@@ -57,14 +57,14 @@ iso8601Handler = customTimestampHandler formatter where
 -- (i.e. YYYY-MM-DDTHH:MM:SS with decimal point and fraction of second)
 -- timestamp on every log message.
 iso8601PlusHandler :: (MonadIO m, MonadMask m)
-                   => Handler m Doc
-                   -> Handler m Doc
+                   => Handler m (Doc ann)
+                   -> Handler m (Doc ann)
 iso8601PlusHandler = customTimestampHandler formatter where
   formatter = Time.formatTime Time.defaultTimeLocale "%Y-%m-%dT%H:%M:%S%06Q"
 
 -- | Converts an existing handler into a handler that renders an RFC822
 -- timestamp on every log message.
-rfc822Handler :: (MonadIO m, MonadMask m) => Handler m Doc -> Handler m Doc
+rfc822Handler :: (MonadIO m, MonadMask m) => Handler m (Doc ann) -> Handler m (Doc ann)
 rfc822Handler = customTimestampHandler formatter where
   formatter = Time.formatTime Time.defaultTimeLocale Time.rfc822DateFormat
 
@@ -72,8 +72,8 @@ rfc822Handler = customTimestampHandler formatter where
 -- every log message. The timestamp is formatted via the input function.
 customTimestampHandler :: (MonadIO m, MonadMask m)
                        => (UTCTime -> String)
-                       -> Handler m Doc
-                       -> Handler m Doc
+                       -> Handler m (Doc ann)
+                       -> Handler m (Doc ann)
 customTimestampHandler formatter handler = \msg -> do
   msg' <- Log.timestamp msg
   handler (Log.renderWithTimestamp formatter id msg')
@@ -82,9 +82,9 @@ customTimestampHandler formatter handler = \msg -> do
 -- and 'Debug' messages to the first input handler and routes 'Emergency',
 -- 'Alert', 'Critical', and 'Error' messages to the second input handler.
 routeHandler :: (MonadIO m, MonadMask m)
-             => Handler m Doc -- ^ The handler for non-error messages (i.e. stdout handler)
-             -> Handler m Doc -- ^ The handler for error messages (i.e. stderr handler)
-             -> (a -> Doc)    -- ^ How to render
+             => Handler m (Doc ann) -- ^ The handler for non-error messages (i.e. stdout handler)
+             -> Handler m (Doc ann) -- ^ The handler for error messages (i.e. stderr handler)
+             -> (a -> (Doc ann))    -- ^ How to render
              -> Handler m (WithSeverity a)
 routeHandler stdoutHandler stderrHandler renderer = \msg ->
   let msg' = Log.renderWithSeverity renderer msg
@@ -105,36 +105,36 @@ routeHandler stdoutHandler stderrHandler renderer = \msg ->
 -- This function is limiting as it assumes incoming messages are
 -- 'WithSeverity' 'Doc' instead of the more general 'WithSeverity' 'a'.
 dispatchHandler :: (MonadIO m, MonadMask m)
-                => Handler m Doc -- ^ The handler for non-error messages (i.e. stdout handler)
-                -> Handler m Doc -- ^ The handler for error messages (i.e. stderr handler)
-                -> Handler m (WithSeverity Doc)
+                => Handler m (Doc ann) -- ^ The handler for non-error messages (i.e. stdout handler)
+                -> Handler m (Doc ann) -- ^ The handler for error messages (i.e. stderr handler)
+                -> Handler m (WithSeverity (Doc ann))
 dispatchHandler stdoutHandler stderrHandler =
   routeHandler stdoutHandler stderrHandler id
 {-# DEPRECATED dispatchHandler "dispatchHandler is deprecated in favor of routeHandler." #-}
 
 -- | Convenience wrapper around 'Log.withFDHandler' for 'IO.stdout' with somewhat sensible defaults.
-withStdoutHandler :: (MonadIO m, MonadMask m) => (Handler m Doc -> m a) -> m a
+withStdoutHandler :: (MonadIO m, MonadMask m) => (Handler m (Doc ann) -> m a) -> m a
 withStdoutHandler = withCustomStdoutHandler Log.defaultBatchingOptions 0.4 80
 
 -- | Convenience wrapper around 'Log.withFDHandler' for 'IO.stderr' with somewhat sensible defaults.
-withStderrHandler :: (MonadIO m, MonadMask m) => (Handler m Doc -> m a) -> m a
+withStderrHandler :: (MonadIO m, MonadMask m) => (Handler m (Doc ann) -> m a) -> m a
 withStderrHandler = withCustomStderrHandler Log.defaultBatchingOptions 0.4 80
 
 -- | Convenience wrapper around 'Log.withFDHandler' for 'IO.stdout'.
 withCustomStdoutHandler :: (MonadIO m, MonadMask m)
                         => BatchingOptions
-                        -> Float -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
+                        -> Double -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
                         -> Int -- ^ The amount of characters per line. Lines longer than this will be pretty-printed across multiple lines if possible.
-                        -> (Handler m Doc -> m a)
+                        -> (Handler m (Doc ann) -> m a)
                         -> m a
 withCustomStdoutHandler = withCustomHandler IO.stdout
 
 -- | Convenience wrapper around 'Log.withFDHandler' for 'IO.stderr'.
 withCustomStderrHandler :: (MonadIO m, MonadMask m)
                         => BatchingOptions
-                        -> Float -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
+                        -> Double -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
                         -> Int -- ^ The amount of characters per line. Lines longer than this will be pretty-printed across multiple lines if possible.
-                        -> (Handler m Doc -> m a)
+                        -> (Handler m (Doc ann) -> m a)
                         -> m a
 withCustomStderrHandler = withCustomHandler IO.stderr
 
@@ -143,9 +143,9 @@ withCustomStderrHandler = withCustomHandler IO.stderr
 withCustomHandler :: (MonadIO m, MonadMask m)
                   => Handle
                   -> BatchingOptions
-                  -> Float -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
+                  -> Double -- ^ The @ribbonFrac@ parameter to 'Pretty.renderPretty'
                   -> Int -- ^ The amount of characters per line. Lines longer than this will be pretty-printed across multiple lines if possible.
-                  -> (Handler m Doc -> m a)
+                  -> (Handler m (Doc ann) -> m a)
                   -> m a
 withCustomHandler handle options ribbonFrac width = Log.withFDHandler options handle ribbonFrac width
 
@@ -157,7 +157,7 @@ with convenience handler combinators.
 In the quickstart examples, please assume the following is in scope:
 
 @
-app :: 'Log.MonadLog' ('WithSeverity' 'Doc') m => m ()
+app :: 'Log.MonadLog' ('WithSeverity' '(Doc ann)') m => m ()
 app = 'Log.logWarning' "Cargo number 2331 has commandeered the vessel"
 @
 

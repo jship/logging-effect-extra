@@ -7,7 +7,7 @@ module Main (main) where
 import Control.Monad.Log.Extra (Doc, WithFile, MonadLog, WithSeverity)
 import qualified Control.Monad.Log.Extra as Log
 
-app :: MonadLog (WithSeverity (WithFile Doc)) m => m ()
+app :: MonadLog (WithSeverity (WithFile (Doc ann))) m => m ()
 app = do
   $(Log.logEmergencyTH) "GAH! All systems are down!!!"
   $(Log.logAlertTH) "Red alert!"

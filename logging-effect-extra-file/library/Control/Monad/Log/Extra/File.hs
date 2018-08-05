@@ -50,8 +50,8 @@ import qualified Control.Monad.Log as Log
 import Language.Haskell.TH (Exp, Loc(..), Q)
 import Language.Haskell.TH.Syntax (Lift(lift))
 import qualified Language.Haskell.TH.Syntax as TH
-import Text.PrettyPrint.Leijen.Text (Doc)
-import qualified Text.PrettyPrint.Leijen.Text as Pretty
+import Data.Text.Prettyprint.Doc (Doc)
+import qualified Data.Text.Prettyprint.Doc as Pretty
 
 -- | Generates a function that logs an 'Emergency' message with info from the
 -- source file.
@@ -137,7 +137,7 @@ data WithFile a = WithFile
 -- >>> let loc = Loc "SomeFile.hs" "some-package" "SomeModule" (1, 1) (1, 1)
 -- >>> renderWithFile id (WithFile loc "Some message")
 -- [SomeModule:1] Some message
-renderWithFile :: (a -> Doc) -> (WithFile a -> Doc)
+renderWithFile :: (a -> Doc ann) -> (WithFile a -> Doc ann)
 renderWithFile k (WithFile (Loc {loc_module, loc_start}) a) = result where
   result = Pretty.brackets fileInfo Pretty.<+> rest
   fileInfo = Pretty.hcat (Pretty.punctuate Pretty.colon fileInfoList)

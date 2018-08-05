@@ -5,10 +5,10 @@ module Control.Monad.Log.Extra
   , module Control.Monad.Log.Extra.Handler
 
     -- * Re-exports
-  , module Text.PrettyPrint.Leijen.Text
+  , module Data.Text.Prettyprint.Doc
   ) where
 
 import Control.Monad.Log
 import Control.Monad.Log.Extra.File
 import Control.Monad.Log.Extra.Handler
-import Text.PrettyPrint.Leijen.Text (Doc)
+import Data.Text.Prettyprint.Doc (Doc)

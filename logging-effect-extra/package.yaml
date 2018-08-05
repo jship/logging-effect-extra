@@ -1,7 +1,7 @@
 author: Jason Shipman
 category: Other
 dependencies:
-- base >=4.8 && <4.11
+- base >=4.8 && <4.12
 description: Supplemental packages for `logging-effect`.
 executables:
   log-extra:
@@ -22,10 +22,10 @@ ghc-options: -Wall
 github: jship/logging-effect-extra
 library:
   dependencies:
-  - logging-effect >= 1.1.0 && <1.3
+  - logging-effect >= 1.1.0 && <1.4
   - logging-effect-extra-file >= 1.1.0 && <1.2.0
   - logging-effect-extra-handler >= 1.1.2 && <1.2.0
-  - wl-pprint-text >=1.1.0.4 && <1.2
+  - prettyprinter == 1.2.*
   source-dirs: library
 license: MIT
 maintainer: Jason Shipman

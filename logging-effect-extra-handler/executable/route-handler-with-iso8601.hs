@@ -6,9 +6,9 @@ module Main (main) where
 import Control.Monad.Log (MonadLog, WithSeverity)
 import qualified Control.Monad.Log as Log
 import qualified Control.Monad.Log.Extra.Handler as Log
-import Text.PrettyPrint.Leijen.Text (Doc)
+import Data.Text.Prettyprint.Doc (Doc)
 
-app :: MonadLog (WithSeverity Doc) m => m ()
+app :: MonadLog (WithSeverity (Doc ann)) m => m ()
 app = do
   Log.logEmergency "GAH! All systems are down!!!"
   Log.logAlert "Red alert!"
