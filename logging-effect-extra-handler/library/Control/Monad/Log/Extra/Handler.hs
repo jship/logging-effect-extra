@@ -157,7 +157,7 @@ with convenience handler combinators.
 In the quickstart examples, please assume the following is in scope:
 
 @
-app :: 'Log.MonadLog' ('WithSeverity' '(Doc ann)') m => m ()
+app :: 'Log.MonadLog' ('WithSeverity' ('Doc' ann)) m => m ()
 app = 'Log.logWarning' "Cargo number 2331 has commandeered the vessel"
 @
 

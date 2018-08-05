@@ -180,7 +180,7 @@ with TH splices that capture file information.
 {- $quickStartFileInfo
 
 @
-testAppFileOnly :: 'Log.MonadLog' ('WithFile' 'Pretty.Doc') m => m ()
+testAppFileOnly :: 'Log.MonadLog' ('WithFile' ('Doc' ann)) m => m ()
 testAppFileOnly = $('logMessageTH') "Heyo!!!"
 @
 
@@ -189,7 +189,7 @@ testAppFileOnly = $('logMessageTH') "Heyo!!!"
 {- $quickStartFileInfoAndSeverity
 
 @
-testAppFileAndSeverity :: 'Log.MonadLog' ('WithSeverity' ('WithFile' 'Doc')) m => m ()
+testAppFileAndSeverity :: 'Log.MonadLog' ('WithSeverity' ('WithFile' ('Doc' ann))) m => m ()
 testAppFileAndSeverity = do
   $('logEmergencyTH') "GAH! All systems are down!!!"
   $('logAlertTH') "Red alert!"
