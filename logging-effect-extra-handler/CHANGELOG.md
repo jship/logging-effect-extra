@@ -1,5 +1,10 @@
 # Change log
 
+## 2.0.0
+
+* Bump upper bounds on base to 4.12 and logging-effect to 1.4
+* Replace wl-pprint-text with prettyprinter 1.2.*
+
 ## 1.1.4
 
 * Bump upper bound on `exceptions` from 0.10 to 0.11
