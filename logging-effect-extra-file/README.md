@@ -14,9 +14,9 @@ import qualified Control.Monad.Log as Log
 import Control.Monad.Log.Extra.File (WithFile)
 import qualified Control.Monad.Log.Extra.File as Log
 import qualified System.IO as IO
-import Text.PrettyPrint.Leijen.Text (Doc)
+import Data.Text.Prettyprint.Doc (Doc)
 
-app :: MonadLog (WithSeverity (WithFile Doc)) m => m ()
+app :: MonadLog (WithSeverity (WithFile (Doc ann))) m => m ()
 app = do
   $(Log.logEmergencyTH) "GAH! All systems are down!!!"
   $(Log.logAlertTH) "Red alert!"
